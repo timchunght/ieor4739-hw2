@@ -24,6 +24,7 @@ def parse_json(data_filename, ticker_filename):
         print prices[ticker]
     data_file.close()
     ticker_file.close()
+    return prices
 
 def download_json(ticker_filename, output_filename):
     try:
