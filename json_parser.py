@@ -1,26 +1,17 @@
 #!/usr/bin/python
 import sys
-import json
-from yahoo_finance import Share
+import helpers
 from pprint import pprint
 
 
-if len(sys.argv) != 2:  # the program name and the datafile
+if len(sys.argv) != 3:  # the program name and the datafile
   # stop the program and print an error message
   sys.exit("usage: json_parser.py datafile ")
 
-filename = sys.argv[1]
-
+data_filename = sys.argv[1]
+ticker_filename = sys.argv[2]
 print "data input", sys.argv[1]
-
-try:
-    datafile = open(filename, "r")
-    data = json.load(datafile)
-    print data
-    datafile.close()
-except IOError:
-    print ("Cannot open file %s\n" % filename)
-    sys.exit("bye")
-
+print "ticker input", sys.argv[2]
+helpers.parse_json(data_filename, ticker_filename)
 
 
