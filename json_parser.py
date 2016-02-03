@@ -15,4 +15,7 @@ prices = helpers.parse_json(data_filename)
 
 assets_dod_returns = helpers.multi_asset_day_over_day_returns(prices)
 
-print assets_dod_returns.keys()
+print "ZNGA DOD"
+print assets_dod_returns["ZNGA"]
+print len(assets_dod_returns["ZNGA"])
+# print assets_dod_returns.keys()
