@@ -72,7 +72,6 @@ def one_asset_day_over_day_returns(prices_arr):
             day_over_day_returns.append(daily_return)
 
     mean = total/length - 1
-    print mean
     day_over_day_returns[:] = [value - mean for value in day_over_day_returns]
     # print day_over_day_returns
     # print len(prices_arr)
