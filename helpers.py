@@ -22,6 +22,7 @@ def parse_json(data_filename, ticker_filename):
             for j in xrange(len(stock_data)):
                 # print str(j) + " price: " + stock_data[j]['Adj_Close']
                 prices[ticker][j] = float(stock_data[j]['Adj_Close'])
+            prices[ticker].reverse()
             print prices[ticker]
     data_file.close()
     ticker_file.close()
