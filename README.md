@@ -20,7 +20,7 @@ You may also use your desired file as input. The programme will download data in
 
 ### Data Processing
 
-	./json_parser data.json russell_1000_ticker.txt
+	./process_data data.json
 
 ### Theory and Formula:
 

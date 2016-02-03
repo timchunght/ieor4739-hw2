@@ -94,6 +94,7 @@ def multi_asset_day_over_day_returns(prices):
 def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
     # this is the difference between all the assets tickers and the selected asset tickers
     # this is all the possible y's
+    print "Calculating r-squared for the following assets: %s" % (",".join(selected_tickers))
     remaining_tickers = list(set(assets_dod_returns.keys()) - set(selected_tickers))
     selected_assets = []
     for ticker in selected_tickers:
