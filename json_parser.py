@@ -14,7 +14,4 @@ print "data input", sys.argv[1]
 print "ticker input", sys.argv[2]
 prices = helpers.parse_json(data_filename, ticker_filename)
 
-returns = {}
-for ticker in prices.keys():
-	returns[ticker] = helpers.day_over_day_returns(prices[ticker])
-print returns
+print helpers.multi_asset_day_over_day_returns(prices)

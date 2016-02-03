@@ -66,14 +66,25 @@ def download_json(ticker_filename, output_filename):
     ticker_file.close()
     output_file.close()
 
-def day_over_day_returns(prices_arr):
+# return an array of day over day return for a single asset
+def one_asset_day_over_day_returns(prices_arr):
     length = len(prices_arr)
     day_over_day_returns = []
     for idx, current_price in enumerate(prices_arr):
         if idx < length - 1:
             day_over_day_returns.append((current_price - prices_arr[idx+1])/current_price)
 
-    print day_over_day_returns
-    print len(prices_arr)
-    print len(day_over_day_returns)
+    # print day_over_day_returns
+    # print len(prices_arr)
+    # print len(day_over_day_returns)
     return day_over_day_returns
+
+# return a hash/dict of day of day returns for multiple assets; 
+# the key is the ticker and the value is its day of day returns
+def multi_asset_day_over_day_returns(prices):
+    returns = {}
+    for ticker in prices.keys():
+        returns[ticker] = one_asset_day_over_day_returns(prices[ticker])
+    # print returns 
+    return returns
+    
