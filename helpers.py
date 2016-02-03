@@ -13,7 +13,7 @@ def parse_json(data_filename):
 
     prices = {}
     for ticker in data.keys():
-        print ticker
+        # print ticker
         stock_data = data[ticker]
         prices[ticker] = [0 for j in xrange(len(stock_data))]
         for j in xrange(len(stock_data)):
