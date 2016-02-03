@@ -10,13 +10,13 @@ The programme assumes the following dependencies
 
 ### To download stock data as json:
 	
-	./download_stock_prices russell_1000_ticker.txt
+	./download_stock_prices russell_1000_ticker.txt data.json
 
 or 
 	
 	python download_stock_prices.py russell_1000_ticker.txt
 
-You may also use your desired file as input. The programme will download data into ``data.json`` when all the data are fetched.
+You may also use your desired file as input. The programme will download data into ``data.json`` (you can change the output filename as well) when/AFTER all the data are fetched.
 
 ### Data Processing
 
