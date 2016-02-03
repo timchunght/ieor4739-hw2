@@ -1,6 +1,8 @@
 import json
 import sys
 from yahoo_finance import Share
+import stats
+
 def parse_json(data_filename):
     try:
         data_file = open(data_filename, "r")
@@ -18,7 +20,7 @@ def parse_json(data_filename):
             # print str(j) + " price: " + stock_data[j]['Adj_Close']
             prices[ticker][j] = float(stock_data[j]['Adj_Close'])
         prices[ticker].reverse()
-        print prices[ticker]
+        # print prices[ticker]
     data_file.close()
     return prices
 
@@ -88,3 +90,16 @@ def multi_asset_day_over_day_returns(prices):
     # print returns 
     return returns
     
+
+def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
+    # this is the difference between all the assets tickers and the selected asset tickers
+    # this is all the possible y's
+    remaining_tickers = list(set(assets_dod_returns.keys()) - set(selected_tickers))
+    selected_assets = []
+    for ticker in selected_tickers:
+        selected_assets.append(assets_dod_returns[ticker])
+
+    rsquared_sum = 0
+    for ticker in remaining_tickers:
+        rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
+    return rsquared_sum

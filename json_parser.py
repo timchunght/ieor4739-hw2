@@ -22,16 +22,8 @@ for key in assets_dod_returns.keys():
 
 
 selected_tickers = ["FOXA", "FOX", "DDD", "MMM", "AAN", "ABT", "ABBV", "ACHC", "ACN", "ACE"]
-# this is the difference between all the assets tickers and the selected asset tickers
-# this is all the possible y's
-remaining_tickers = list(set(assets_dod_returns.keys()) - set(selected_tickers))
-selected_assets = []
-for ticker in selected_tickers:
-	selected_assets.append(assets_dod_returns[ticker])
 
-rsquared_sum = 0
-for ticker in remaining_tickers:
-	rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
+rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
 
 print "RSQUARED: %f" % (rsquared_sum)
 # remaining_assets 
