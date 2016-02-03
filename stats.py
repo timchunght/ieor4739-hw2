@@ -14,13 +14,7 @@ def reg_m(y, x):
 
 
 def reg0_m(y, x):
-    X = x[0]
-#    print X
-    for ele in x[1:]:
-#        print ele
-        X = np.column_stack((ele, X))
-#    print X
-    results = sm.OLS(y, X).fit()
+    results = sm.OLS(y, np.transpose(x)).fit()
     return results
 
 
