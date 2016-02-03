@@ -21,7 +21,7 @@ def parse_json(data_filename, ticker_filename):
             prices[ticker] = [0 for j in xrange(len(stock_data))]
             for j in xrange(len(stock_data)):
                 # print str(j) + " price: " + stock_data[j]['Adj_Close']
-                prices[ticker][j] = stock_data[j]['Adj_Close']
+                prices[ticker][j] = float(stock_data[j]['Adj_Close'])
             print prices[ticker]
     data_file.close()
     ticker_file.close()
@@ -64,3 +64,6 @@ def download_json(ticker_filename, output_filename):
 
     ticker_file.close()
     output_file.close()
+
+def day_over_day_return(prices):
+    return []
