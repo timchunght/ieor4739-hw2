@@ -65,5 +65,14 @@ def download_json(ticker_filename, output_filename):
     ticker_file.close()
     output_file.close()
 
-def day_over_day_return(prices):
-    return []
+def day_over_day_returns(prices_arr):
+    length = len(prices_arr)
+    day_over_day_returns = []
+    for idx, current_price in enumerate(prices_arr):
+        if idx < length - 1:
+            day_over_day_returns.append((current_price - prices_arr[idx+1])/current_price)
+
+    print day_over_day_returns
+    print len(prices_arr)
+    print len(day_over_day_returns)
+    return day_over_day_returns
