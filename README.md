@@ -1,3 +1,29 @@
+# HW 1
+---
+
+### Installation and Running the Programme
+
+The programme assumes the following dependencies
+	
+	python 2.7
+	yahoo_finance	
+
+### To download stock data as json:
+	
+	./download_stock_prices russell_1000_ticker.txt
+
+or 
+	
+	python download_stock_prices.py russell_1000_ticker.txt
+
+You may also use your desired file as input. The programme will download data into ``data.json`` when all the data are fetched.
+
+### Data Processing
+
+	./json_parser data.json russell_1000_ticker.txt
+
+### Theory and Formula:
+
 APPL T p
 pt 0 <= t < T
 rt = (pt-(p(t-1))/pt
@@ -5,13 +31,13 @@ rt 1 <= t < T
 len(rt) = T - 1
 mean = mean(rt)
 rt.each do |r|
-	r-=mean
+	r -= mean
 end
 
 y-axis = rt
 x-axis
 
-Sample prices array/vector
+### Sample prices array/vector
 
 Data is presented from most recent to oldest:
 

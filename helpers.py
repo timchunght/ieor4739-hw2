@@ -1,31 +1,25 @@
 import json
 import sys
 from yahoo_finance import Share
-def parse_json(data_filename, ticker_filename):
+def parse_json(data_filename):
     try:
         data_file = open(data_filename, "r")
         data = json.load(data_file)
-        ticker_file= open(ticker_filename, 'r')
-       
     except IOError:
-        print ("Cannot open file %s\n" % filename)
+        print ("Cannot open file %s\n" % data_filename)
         sys.exit("bye")
 
     prices = {}
-    tickers = ticker_file.readlines();
-    for ticker in tickers:
-        ticker = ticker.split()[0]
-        if ticker in data.keys():
-            print ticker
-            stock_data = data[ticker]
-            prices[ticker] = [0 for j in xrange(len(stock_data))]
-            for j in xrange(len(stock_data)):
-                # print str(j) + " price: " + stock_data[j]['Adj_Close']
-                prices[ticker][j] = float(stock_data[j]['Adj_Close'])
-            prices[ticker].reverse()
-            print prices[ticker]
+    for ticker in data.keys():
+        print ticker
+        stock_data = data[ticker]
+        prices[ticker] = [0 for j in xrange(len(stock_data))]
+        for j in xrange(len(stock_data)):
+            # print str(j) + " price: " + stock_data[j]['Adj_Close']
+            prices[ticker][j] = float(stock_data[j]['Adj_Close'])
+        prices[ticker].reverse()
+        print prices[ticker]
     data_file.close()
-    ticker_file.close()
     return prices
 
 def download_json(ticker_filename, output_filename):
