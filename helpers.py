@@ -41,22 +41,22 @@ def download_json(ticker_filename, output_filename):
     for line in lines:
         thisline = line.split()
         if len(line) > 0:
-            ticker = thisline[0]
-            print (str(count) + " " + ticker)
+            try:
+                ticker = thisline[0]
+                print (str(count) + " " + ticker)
 
-            share = Share(ticker)
-            everything = share.get_historical('2015-01-01', '2015-01-31')
-            # prices[thisline[0]] = [0 for j in xrange(len(everything))]
-    #         for j in xrange(len(everything)):
-    # #            print str(j) + " price: " + everything[j]['Adj_Close']
-    #             prices[thisline[0]][j] = everything[j]['Adj_Close']
-            
-            prices[ticker] = everything
-            print ticker
-            count += 1
-            
-        if count == 5:
-            break
+                share = Share(ticker)
+                everything = share.get_historical('2014-01-01', '2015-12-31')
+                # prices[thisline[0]] = [0 for j in xrange(len(everything))]
+        #         for j in xrange(len(everything)):
+        # #            print str(j) + " price: " + everything[j]['Adj_Close']
+        #             prices[thisline[0]][j] = everything[j]['Adj_Close']
+                
+                prices[ticker] = everything
+                print ticker
+                count += 1
+            except:
+                print "sad"
 
     json.dump(prices, output_file)          
 
