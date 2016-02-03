@@ -15,13 +15,14 @@ def parse_json(data_filename, ticker_filename):
     tickers = ticker_file.readlines();
     for ticker in tickers:
         ticker = ticker.split()[0]
-        stock_data = data[ticker]
-
-        prices[ticker] = [0 for j in xrange(len(stock_data))]
-        for j in xrange(len(stock_data)):
-            # print str(j) + " price: " + stock_data[j]['Adj_Close']
-            prices[ticker][j] = stock_data[j]['Adj_Close']
-        print prices[ticker]
+        if ticker in data.keys():
+            print ticker
+            stock_data = data[ticker]
+            prices[ticker] = [0 for j in xrange(len(stock_data))]
+            for j in xrange(len(stock_data)):
+                # print str(j) + " price: " + stock_data[j]['Adj_Close']
+                prices[ticker][j] = stock_data[j]['Adj_Close']
+            print prices[ticker]
     data_file.close()
     ticker_file.close()
     return prices
@@ -41,8 +42,9 @@ def download_json(ticker_filename, output_filename):
     for line in lines:
         thisline = line.split()
         if len(line) > 0:
+            ticker = thisline[0]
             try:
-                ticker = thisline[0]
+                
                 print (str(count) + " " + ticker)
 
                 share = Share(ticker)
@@ -56,7 +58,7 @@ def download_json(ticker_filename, output_filename):
                 print ticker
                 count += 1
             except:
-                print "sad"
+                print "cannot retrieve data for ticker: %s" % (ticker)
 
     json.dump(prices, output_file)          
 
