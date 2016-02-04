@@ -31,7 +31,15 @@ for i in range(len(selected_tickers)):
 	ticker = new_selected_tickers[i]
 	del(new_selected_tickers[i])
 	new_rsquared_sums[ticker] = helpers.selected_assets_rsquared_sum(new_selected_tickers, assets_dod_returns)
+new_rsquared_sums_diff = {}
+for key in new_rsquared_sums.keys():
+	new_rsquared_sums_diff[key] = original_rsquared_sum - new_rsquared_sums[key]
+min_val = min(new_rsquared_sums_diff.itervalues())
+bad_ticker = [k for k, v in new_rsquared_sums_diff.iteritems() if v == min_val][0]
 
-print new_rsquared_sums
+bad_ticker
+
+
+
 # print "RSQUARED: %f" % (original_rsquared_sum)
 # remaining_assets 

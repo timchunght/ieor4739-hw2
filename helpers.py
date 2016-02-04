@@ -104,3 +104,18 @@ def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
     for ticker in remaining_tickers:
         rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
     return rsquared_sum
+
+def get_bad_ticker_in_selected_assets(selected_tickers, assets_dod_returns):
+    original_rsquared_sum = selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
+    # in this hash, the key will be the ticker removed
+    new_rsquared_sums = {}
+    for i in range(len(selected_tickers)):
+        new_selected_tickers = list(selected_tickers)
+        ticker = new_selected_tickers[i]
+        del(new_selected_tickers[i])
+        new_rsquared_sums[ticker] = selected_assets_rsquared_sum(new_selected_tickers, assets_dod_returns)
+    new_rsquared_sums_diff = {}
+    for key in new_rsquared_sums.keys():
+        new_rsquared_sums_diff[key] = original_rsquared_sum - new_rsquared_sums[key]
+    min_val = min(new_rsquared_sums_diff.itervalues())
+    return [k for k, v in new_rsquared_sums_diff.iteritems() if v == min_val][0]
