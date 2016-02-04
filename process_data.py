@@ -24,22 +24,7 @@ for key in assets_dod_returns.keys():
 selected_tickers = ["FOXA", "FOX", "DDD", "MMM", "AAN", "ABT", "ABBV", "ACHC", "ACN", "ACE"]
 
 original_rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
-# in this hash, the key will be the ticker removed
-new_rsquared_sums = {}
-for i in range(len(selected_tickers)):
-	new_selected_tickers = list(selected_tickers)
-	ticker = new_selected_tickers[i]
-	del(new_selected_tickers[i])
-	new_rsquared_sums[ticker] = helpers.selected_assets_rsquared_sum(new_selected_tickers, assets_dod_returns)
-new_rsquared_sums_diff = {}
-for key in new_rsquared_sums.keys():
-	new_rsquared_sums_diff[key] = original_rsquared_sum - new_rsquared_sums[key]
-min_val = min(new_rsquared_sums_diff.itervalues())
-bad_ticker = [k for k, v in new_rsquared_sums_diff.iteritems() if v == min_val][0]
-
-bad_ticker
-
-
+print helpers.get_bad_ticker_in_selected_assets(original_rsquared_sum, selected_tickers, assets_dod_returns)
 
 # print "RSQUARED: %f" % (original_rsquared_sum)
 # remaining_assets 
