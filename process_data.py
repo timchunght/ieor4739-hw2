@@ -23,8 +23,12 @@ for key in assets_dod_returns.keys():
 
 selected_tickers = ["FOXA", "FOX", "DDD", "MMM", "AAN", "ABT", "ABBV", "ACHC", "ACN", "ACE"]
 
+
 original_rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
-print helpers.get_bad_ticker_in_selected_assets(original_rsquared_sum, selected_tickers, assets_dod_returns)
+for i in range(100):
+	bad_ticker = helpers.get_bad_ticker_in_selected_assets(original_rsquared_sum, selected_tickers, assets_dod_returns)
+	# available_tickers = assets_dod_returns.keys() - selected_tickers 
+	# selected_tickers = new set of ticker with the bad ticker removed and replaced with a random one from the available_ickers
 
 # print "RSQUARED: %f" % (original_rsquared_sum)
 # remaining_assets 
