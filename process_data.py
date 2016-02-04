@@ -23,7 +23,15 @@ for key in assets_dod_returns.keys():
 
 selected_tickers = ["FOXA", "FOX", "DDD", "MMM", "AAN", "ABT", "ABBV", "ACHC", "ACN", "ACE"]
 
-rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
+original_rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
+# in this hash, the key will be the ticker removed
+new_rsquared_sums = {}
+for i in range(len(selected_tickers)):
+	new_selected_tickers = list(selected_tickers)
+	ticker = new_selected_tickers[i]
+	del(new_selected_tickers[i])
+	new_rsquared_sums[ticker] = helpers.selected_assets_rsquared_sum(new_selected_tickers, assets_dod_returns)
 
-print "RSQUARED: %f" % (rsquared_sum)
+print new_rsquared_sums
+# print "RSQUARED: %f" % (original_rsquared_sum)
 # remaining_assets 
