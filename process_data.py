@@ -25,7 +25,7 @@ for key in assets_dod_returns.keys():
 selected_tickers = ["FOXA", "FOX", "DDD", "MMM", "AAN", "ABT", "ABBV", "ACHC", "ACN", "ACE"]
 
 final_assets_rsquared_sums = {}
-for i in range(100):
+for i in range(99):
 	original_rsquared_sum = helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
 	final_assets_rsquared_sums[",".join(selected_tickers)] = float(original_rsquared_sum)
 	bad_ticker = helpers.get_bad_ticker_in_selected_assets(original_rsquared_sum, selected_tickers, assets_dod_returns)
