@@ -2,6 +2,9 @@ import json
 import sys
 from yahoo_finance import Share
 import stats
+import numpy as np
+
+
 
 def parse_json(data_filename):
     try:
@@ -66,3 +69,22 @@ def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
     for ticker in all_asset_tickers:
         rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
     return rsquared_sum
+
+def calculate_V(selected_tickers, assets_dod_returns):
+
+    # this is the difference between all the assets tickers and the selected asset tickers
+    # this is all the possible y's
+    print "calculate V for %s" % (",".join(selected_tickers))
+    all_asset_tickers = assets_dod_returns.keys()
+    selected_assets = []
+    for ticker in selected_tickers:
+        selected_assets.append(assets_dod_returns[ticker])
+
+    V = np.ndarray(shape=(10, len(all_asset_tickers)))
+    # use regression to get coefficients for all assets
+    for i in xrange(len(all_asset_tickers)):
+        ticker = all_asset_tickers[i] 
+        results = stats.reg0_m(assets_dod_returns[ticker], selected_assets)
+        V[:, i] = results.params
+    # import pdb; pdb.set_trace()
+    return V
