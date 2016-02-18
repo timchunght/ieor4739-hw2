@@ -24,44 +24,6 @@ def parse_json(data_filename):
     data_file.close()
     return prices
 
-def download_json(ticker_filename, output_filename):
-    try:
-        ticker_file = open(ticker_filename, 'r') # opens the input file
-        output_file = open(output_filename, "w")
-    except IOError:
-        print ("Cannot open file %s\n" % ticker_filename)
-        sys.exit("bye")
-
-    lines = ticker_file.readlines();
-
-    count = 1
-    prices = {}
-    for line in lines:
-        thisline = line.split()
-        if len(line) > 0:
-            ticker = thisline[0]
-            try:
-                
-                print (str(count) + " " + ticker)
-
-                share = Share(ticker)
-                everything = share.get_historical('2014-01-01', '2015-12-31')
-                # prices[thisline[0]] = [0 for j in xrange(len(everything))]
-        #         for j in xrange(len(everything)):
-        # #            print str(j) + " price: " + everything[j]['Adj_Close']
-        #             prices[thisline[0]][j] = everything[j]['Adj_Close']
-                
-                prices[ticker] = everything
-                print ticker
-                count += 1
-            except:
-                print "cannot retrieve data for ticker: %s" % (ticker)
-
-    json.dump(prices, output_file)          
-
-    ticker_file.close()
-    output_file.close()
-
 # return an array of day over day return for a single asset
 def one_asset_day_over_day_returns(prices_arr):
     length = len(prices_arr)
@@ -95,26 +57,12 @@ def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
     # this is the difference between all the assets tickers and the selected asset tickers
     # this is all the possible y's
     print "Calculating r-squared for the following assets: %s" % (",".join(selected_tickers))
-    remaining_tickers = list(set(assets_dod_returns.keys()) - set(selected_tickers))
+    all_asset_tickers = assets_dod_returns.keys()
     selected_assets = []
     for ticker in selected_tickers:
         selected_assets.append(assets_dod_returns[ticker])
 
     rsquared_sum = 0
-    for ticker in remaining_tickers:
+    for ticker in all_asset_tickers:
         rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
     return rsquared_sum
-
-def get_bad_ticker_in_selected_assets(original_rsquared_sum, selected_tickers, assets_dod_returns):
-    # in this hash, the key will be the ticker removed
-    new_rsquared_sums = {}
-    for i in range(len(selected_tickers)):
-        new_selected_tickers = list(selected_tickers)
-        ticker = new_selected_tickers[i]
-        del(new_selected_tickers[i])
-        new_rsquared_sums[ticker] = selected_assets_rsquared_sum(new_selected_tickers, assets_dod_returns)
-    new_rsquared_sums_diff = {}
-    for key in new_rsquared_sums.keys():
-        new_rsquared_sums_diff[key] = original_rsquared_sum - new_rsquared_sums[key]
-    min_val = min(new_rsquared_sums_diff.itervalues())
-    return [k for k, v in new_rsquared_sums_diff.iteritems() if v == min_val][0]
