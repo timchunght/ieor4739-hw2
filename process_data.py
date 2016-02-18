@@ -23,6 +23,9 @@ for key in assets_dod_returns.keys():
 	if len(assets_dod_returns[key]) != 503:
 		del(assets_dod_returns[key])
 
-helpers.calculate_V(selected_tickers, assets_dod_returns)
+# Part a
+# print helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
 
-print helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
+# Part b and passing in True saves the file to the local directory
+V = helpers.calculate_V(selected_tickers, assets_dod_returns, True)
+

@@ -70,7 +70,7 @@ def selected_assets_rsquared_sum(selected_tickers, assets_dod_returns):
         rsquared_sum += stats.reg0_m(assets_dod_returns[ticker], selected_assets).rsquared
     return rsquared_sum
 
-def calculate_V(selected_tickers, assets_dod_returns):
+def calculate_V(selected_tickers, assets_dod_returns, save_file=False):
 
     # this is the difference between all the assets tickers and the selected asset tickers
     # this is all the possible y's
@@ -80,11 +80,29 @@ def calculate_V(selected_tickers, assets_dod_returns):
     for ticker in selected_tickers:
         selected_assets.append(assets_dod_returns[ticker])
 
-    V = np.ndarray(shape=(10, len(all_asset_tickers)))
+    V = np.ndarray(shape=(len(selected_tickers), len(all_asset_tickers)))
     # use regression to get coefficients for all assets
     for i in xrange(len(all_asset_tickers)):
         ticker = all_asset_tickers[i] 
         results = stats.reg0_m(assets_dod_returns[ticker], selected_assets)
         V[:, i] = results.params
+
+    if save_file:
+        np.savetxt("-".join(selected_tickers), V, delimiter=",")
     # import pdb; pdb.set_trace()
     return V
+
+
+# What is x here is it the same as big X
+# F = np.cov(np.transpose(selected_assets))
+
+# Q = np.cov(returns)
+# VTransFV = np.dot(np.dot(np.transpose(V), F), V)
+
+# VTransFV
+# covariance matrix(Q) 
+# D (Residual Matrix)
+# D = Q - VTransFV
+# "sigma squared" coefficients, variances (sigma^2) are the diagonal of a covariances 
+# but we only need the residual in this case
+# D = np.diag(D) # only keep the diagonal
