@@ -84,25 +84,45 @@ def calculate_V(selected_tickers, assets_dod_returns, save_file=False):
     # use regression to get coefficients for all assets
     for i in xrange(len(all_asset_tickers)):
         ticker = all_asset_tickers[i] 
+        # selected_assets is 10 x T
         results = stats.reg0_m(assets_dod_returns[ticker], selected_assets)
         V[:, i] = results.params
+ 
+    print "Size of V: "
+    # V is a 10 x N matrix
+    print V.shape
+    # F is 10 x 10
+    F = np.cov(selected_assets)
+    print "Size of F: "
+    print F.shape
+    # Q is a N (total number of assets) x N (Q is covariance matrix)
+    Q = np.cov(assets_dod_returns.values())
+    print "Size of Q: "
+    print Q.shape
+    # VTransFV is N x N matrix;  
+    VTransFV = np.dot(np.dot(np.transpose(V), F), V)
+    print "Size of V^T *F*V: "
+    print VTransFV.shape
+    # R is a (Residual Matrix) (N x N)
+    R = Q - VTransFV
+    print "Size of R: "
+    print R.shape
+    # "sigma squared" coefficients, variances (sigma^2) are the diagonal of a covariances 
+    # but we only need the residual in this case
+    # only keep the diagonal
+    DiagR = np.diag(R) 
+    print "Size of Diagonal R: "
+    print DiagR.shape
 
     if save_file:
-        np.savetxt("-".join(selected_tickers), V, delimiter=",")
-    # import pdb; pdb.set_trace()
-    return V
+        np.savetxt("-".join(selected_tickers) + "-V", V)
+        np.savetxt("-".join(selected_tickers) + "-F", F)
+        np.savetxt("-".join(selected_tickers) + "-Q", Q)
+        np.savetxt("-".join(selected_tickers) + "-VTransFV", VTransFV)
+        np.savetxt("-".join(selected_tickers) + "-R", R)
+        np.savetxt("-".join(selected_tickers) + "-DiagonalR", DiagR)
+        
+    return
 
 
-# What is x here is it the same as big X
-# F = np.cov(np.transpose(selected_assets))
-
-# Q = np.cov(returns)
-# VTransFV = np.dot(np.dot(np.transpose(V), F), V)
-
-# VTransFV
-# covariance matrix(Q) 
-# D (Residual Matrix)
-# D = Q - VTransFV
-# "sigma squared" coefficients, variances (sigma^2) are the diagonal of a covariances 
-# but we only need the residual in this case
-# D = np.diag(D) # only keep the diagonal
+ 
