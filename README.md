@@ -18,3 +18,4 @@ R-Squared Sum: 				371.339798518
 
 	./process_data data.json
 
+The results of F, Q, R, V, V^T*F*V will be dumped to a txt file preceded by the selected asset tickers.

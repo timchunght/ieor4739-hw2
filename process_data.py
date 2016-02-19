@@ -24,7 +24,7 @@ for key in assets_dod_returns.keys():
 		del(assets_dod_returns[key])
 
 # Part a
-# print helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
+print helpers.selected_assets_rsquared_sum(selected_tickers, assets_dod_returns)
 
 # Part b and passing in True saves the file to the local directory
 V = helpers.calculate_V(selected_tickers, assets_dod_returns, True)
