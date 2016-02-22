@@ -134,7 +134,7 @@ int myo_step(myo *pmyo)
   int n = pmyo->n;
   int f = pmyo->f;
   double* x = pmyo->x;
-  // double* gradient = pmyo->gradient; 
+  double* gradient = pmyo->gradient; 
   double* upper = pmyo->upper;
   double* lower = pmyo->lower;
   gradient_type* gradients = pmyo->gradients;
@@ -182,8 +182,9 @@ int myo_step(myo *pmyo)
     }
     printf("\ntotal: %g", total);
     descending_y[k] = -total;
-    int is_y_feasible = 0;
-     // feasible iff lj ≤ x(k) + y(k) ≤ uj for all j
+    int is_y_feasible = 1;
+    
+    // feasible iff lj ≤ x(k) + y(k) ≤ uj for all j
     for(int j = 0; j < n; j++) {
       int idx = gradients[j].idx;
       if(lower[idx] <= (x[idx] + descending_y[j]) && (x[idx] + descending_y[j]) <= upper[idx]) {
@@ -194,6 +195,9 @@ int myo_step(myo *pmyo)
       }
     }
 
+    if(is_y_feasible) {
+      
+    }
 
   }
   /** next, compute step size **/
