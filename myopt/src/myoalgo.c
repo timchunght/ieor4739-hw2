@@ -9,6 +9,7 @@ int myo_step(myo *pmyo);
 void myo_showx(myo *pmyo, int start, int end);
 void myoVtimesy(myo *pmyo, double *y);
 int myoprepare(myo *pmyo);
+int descending_compare_quicksort_func(const void *a,const void *b);
 
 #define LOUDFEASIBLE
 
@@ -140,7 +141,13 @@ int myo_step(myo *pmyo)
   }
   printf("\n************ORIGINAL GRADIENT END**********");
   
-
+  qsort(pmyo->gradient, pmyo->n, sizeof(double),descending_compare_quicksort_func);
+  
+  printf("************SORTED GRADIENT**********\n");
+  for(int i = 0; i < pmyo->n; i++){
+    printf("%g,", pmyo->gradient[i]);
+  }
+  printf("\n************SORTED GRADIENT END**********");
   /** next, compute direction **/
 
   /** next, compute step size **/
@@ -176,3 +183,19 @@ void myo_showx(myo *pmyo, int start, int end)
   printf("\n");
 }
 
+int descending_compare_quicksort_func(const void *a,const void *b) {
+  // if ((double *) a > (double *) b) {
+  //   return -1;
+  // } else if((double *) a < (double *) b) {
+  //   return 1;
+  // } else {
+  //   return 0;
+  // }
+
+  double *x = (double *) a;
+  double *y = (double *) b;
+  if (*x < *y) return 1;
+  else if (*x > *y) return -1; return 0;
+
+
+}
