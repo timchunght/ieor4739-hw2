@@ -2,6 +2,13 @@
 
 #define MYO
 
+
+typedef struct gradient {
+  int idx;
+  double value;
+} gradient;
+
+
 typedef struct myo{
   int n;
   int f;
@@ -16,6 +23,9 @@ typedef struct myo{
   double *x;
   double *Vx;
   double *VtF;
+
+  // custom struct fields
+  gradient *gradients;
 }myo;
 
 #define NOMEM 100

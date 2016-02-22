@@ -37,6 +37,9 @@ int myoGetmyoFromFile(myo **ppmyo, char *filename)
   pmyo->Vx = (double *)calloc(f, sizeof(double));
   pmyo->VtF = (double *)calloc(n*f, sizeof(double));
 
+  // Instantiate custom fields
+  pmyo->gradients = (gradient *)calloc(pmyo->n, sizeof(gradient));
+
   if(!pmyo->mu || !pmyo->sigma2 || !pmyo->V || !pmyo->upper || !pmyo->lower 
      || !pmyo->F || !pmyo->gradient || !pmyo->x || !pmyo->Vx || !pmyo->VtF  ){
     printf("no memory for allocation\n"); retcode = NOMEM; goto BACK;
