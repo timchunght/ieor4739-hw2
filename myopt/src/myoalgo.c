@@ -10,7 +10,7 @@ void myo_showx(myo *pmyo, int start, int end);
 void myoVtimesy(myo *pmyo, double *y);
 int myoprepare(myo *pmyo);
 // custom headers
-int descending_compare_quicksort_func(const gradient* a, const gradient* b);
+int descending_compare_quicksort_func(const gradient_type* a, const gradient_type* b);
 
 #define LOUDFEASIBLE
 
@@ -130,7 +130,15 @@ int myo_getgradient(myo *pmyo)
 int myo_step(myo *pmyo)
 {
   int retcode = 0;
-
+  // struct fields
+  int n = pmyo->n;
+  int f = pmyo->f;
+  double* x = pmyo->x;
+  // double* gradient = pmyo->gradient; 
+  double* upper = pmyo->upper;
+  double* lower = pmyo->lower;
+  gradient_type* gradients = pmyo->gradients;
+  double* descending_y = pmyo->descending_y;
   printf(" computing step at iteration %d\n", pmyo->iteration);
 
   if( (retcode = myo_getgradient(pmyo))) goto BACK;
@@ -142,7 +150,6 @@ int myo_step(myo *pmyo)
   }
   printf("\n************ORIGINAL GRADIENT END**********");
 
-  gradient* gradients = pmyo->gradients;
   // copy gradient into gradients along with their index
   for (int i = 0; i < pmyo->n; i++) {
     gradients[i].idx = i;
@@ -151,7 +158,7 @@ int myo_step(myo *pmyo)
 
 
   // qsort((void*)gradients, pmyo->n, sizeof(gradient), (int(*)(const void*,const void*))descending_compare_quicksort_func);
-  qsort((void*)gradients, pmyo->n, sizeof(gradient), (int(*)(const void*,const void*))descending_compare_quicksort_func);
+  qsort((void*)gradients, pmyo->n, sizeof(gradient_type), (int(*)(const void*,const void*))descending_compare_quicksort_func);
   printf("************SORTED GRADIENT**********\n");
   
   for(int i = 0; i < pmyo->n; i++){
@@ -162,6 +169,33 @@ int myo_step(myo *pmyo)
 
   /** next, compute direction **/
 
+  for (int k = 0; k < n; k++) {
+
+    double total = 0;
+    for (int j = 0; j < k; j++) {
+      descending_y[j] = lower[gradients[j].idx] - x[gradients[j].idx];
+      total += descending_y[j];
+    }
+    for (int j = k + 1; j < n; j++) {
+      descending_y[j] = upper[gradients[j].idx] - x[gradients[j].idx];
+      total += descending_y[j];
+    }
+    printf("\ntotal: %g", total);
+    descending_y[k] = -total;
+    int is_y_feasible = 0;
+     // feasible iff lj ≤ x(k) + y(k) ≤ uj for all j
+    for(int j = 0; j < n; j++) {
+      int idx = gradients[j].idx;
+      if(lower[idx] <= (x[idx] + descending_y[j]) && (x[idx] + descending_y[j]) <= upper[idx]) {
+        
+      } else {
+        is_y_feasible = 0;
+        break;
+      }
+    }
+
+
+  }
   /** next, compute step size **/
  BACK:
   return retcode;
@@ -195,7 +229,7 @@ void myo_showx(myo *pmyo, int start, int end)
   printf("\n");
 }
 
-int descending_compare_quicksort_func(const gradient *a,const gradient *b) {
+int descending_compare_quicksort_func(const gradient_type *a,const gradient_type *b) {
   // if ((double *) a > (double *) b) {
   //   return -1;
   // } else if((double *) a < (double *) b) {

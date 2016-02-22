@@ -38,7 +38,8 @@ int myoGetmyoFromFile(myo **ppmyo, char *filename)
   pmyo->VtF = (double *)calloc(n*f, sizeof(double));
 
   // Instantiate custom fields
-  pmyo->gradients = (gradient *)calloc(pmyo->n, sizeof(gradient));
+  pmyo->gradients = (gradient_type *)calloc(pmyo->n, sizeof(gradient_type));
+  pmyo->descending_y = (double *)calloc(pmyo->n, sizeof(double));
 
   if(!pmyo->mu || !pmyo->sigma2 || !pmyo->V || !pmyo->upper || !pmyo->lower 
      || !pmyo->F || !pmyo->gradient || !pmyo->x || !pmyo->Vx || !pmyo->VtF  ){
