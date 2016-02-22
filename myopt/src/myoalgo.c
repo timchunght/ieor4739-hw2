@@ -134,6 +134,12 @@ int myo_step(myo *pmyo)
   if( (retcode = myo_getgradient(pmyo))) goto BACK;
 
   /** next, sort gradient **/
+  printf("************ORIGINAL GRADIENT**********\n");
+  for(int i = 0; i < pmyo->n; i++){
+    printf("%g,", pmyo->gradient[i]);
+  }
+  printf("\n************ORIGINAL GRADIENT END**********");
+  
 
   /** next, compute direction **/
 
