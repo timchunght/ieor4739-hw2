@@ -154,9 +154,8 @@ int myo_step(myo *pmyo)
   qsort((void*)gradients, pmyo->n, sizeof(gradient), (int(*)(const void*,const void*))descending_compare_quicksort_func);
   printf("************SORTED GRADIENT**********\n");
   
-
   for(int i = 0; i < pmyo->n; i++){
-    printf("%g ", gradients[i].value);
+    printf("{idx: %d, value: %g} ", gradients[i].idx, gradients[i].value);
   }
   printf("\n************SORTED GRADIENT END**********");
 
