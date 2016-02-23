@@ -245,6 +245,7 @@ int myo_step(myo *pmyo)
 
 
   /** next, compute step size **/
+  // linear G(s) = as + b = 0 and we will solve for a
   double s = 0.0;
   double a = 0.0;
   double b = 0.0;
