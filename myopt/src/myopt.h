@@ -28,6 +28,7 @@ typedef struct myo{
   gradient_type *gradients;
   double *descending_y;
   double *descending_optimized_y;
+  double *y;
 }myo;
 
 #define NOMEM 100

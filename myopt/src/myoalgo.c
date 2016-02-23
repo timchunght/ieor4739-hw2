@@ -137,8 +137,10 @@ int myo_step(myo *pmyo)
   double* gradient = pmyo->gradient; 
   double* upper = pmyo->upper;
   double* lower = pmyo->lower;
+  double* y = pmyo->y;
   gradient_type* gradients = pmyo->gradients;
   double* descending_y = pmyo->descending_y;
+  double* descending_optimized_y = pmyo->descending_optimized_y;
   printf(" computing step at iteration %d\n", pmyo->iteration);
 
   if( (retcode = myo_getgradient(pmyo))) goto BACK;
@@ -168,8 +170,8 @@ int myo_step(myo *pmyo)
 
 
   /** next, compute direction **/
-  double optimal_cost = 0.0
-  int feasible_y_count = 0
+  double optimal_cost = 0.0;
+  int feasible_y_count = 0;
   for (int k = 0; k < n; k++) {
 
     double total = 0;
@@ -197,7 +199,7 @@ int myo_step(myo *pmyo)
     }
 
     if(is_y_feasible) {
-      double cost = 0.0
+      double cost = 0.0;
       for(int j = 0; j < n; j++) {
 
         cost += gradients[j].value * descending_y[j];
@@ -219,7 +221,23 @@ int myo_step(myo *pmyo)
 
   }
 
-  printf("feasible_y_count: %d", feasible_y_count)
+  
+  if(feasible_y_count > 0) {
+    printf("\nfeasible_y_count: %d\n", feasible_y_count);
+  } else {
+    printf("unfeasible y; exiting\n");
+    return 1;
+  }
+
+  printf("\nMost Optimal Cost: %g\n", optimal_cost);
+  // set y to the optimized y's using the original index
+  for(int i = 0; i < n; i++) {
+    y[gradients[i].idx] = descending_optimized_y[i];
+  }
+  for(int i = 0; i < n; i++) {
+    printf("new y: %g\n", y[i]);
+  }
+
   /** next, compute step size **/
  BACK:
   return retcode;

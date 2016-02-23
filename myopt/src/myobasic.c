@@ -41,6 +41,7 @@ int myoGetmyoFromFile(myo **ppmyo, char *filename)
   pmyo->gradients = (gradient_type *)calloc(pmyo->n, sizeof(gradient_type));
   pmyo->descending_y = (double *)calloc(pmyo->n, sizeof(double));
   pmyo->descending_optimized_y = (double *)calloc(pmyo->n, sizeof(double));
+  pmyo->y = (double *)calloc(pmyo->n, sizeof(double));
 
   if(!pmyo->mu || !pmyo->sigma2 || !pmyo->V || !pmyo->upper || !pmyo->lower 
      || !pmyo->F || !pmyo->gradient || !pmyo->x || !pmyo->Vx || !pmyo->VtF  ){
