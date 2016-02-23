@@ -17,7 +17,7 @@ int descending_compare_quicksort_func(const gradient_type* a, const gradient_typ
 int myoalgo(myo *pmyo)
 {
   int retcode = 0;
-  int max_its = 2;
+  int max_its = 20;
 
   if((retcode = myoprepare(pmyo))) goto BACK;
 
@@ -133,6 +133,10 @@ int myo_step(myo *pmyo)
   // struct fields
   int n = pmyo->n;
   int f = pmyo->f;
+  double lambda = 1.0;
+  double *VtF = pmyo->VtF;
+  double *V = pmyo->V;
+  double *sigma2 = pmyo->sigma2;
   double* x = pmyo->x;
   double* gradient = pmyo->gradient; 
   double* upper = pmyo->upper;
@@ -235,10 +239,60 @@ int myo_step(myo *pmyo)
     y[gradients[i].idx] = descending_optimized_y[i];
   }
   for(int i = 0; i < n; i++) {
-    printf("new y: %g\n", y[i]);
+    printf("new []y: %g ", y[i]);
   }
+  printf("\n");
+
 
   /** next, compute step size **/
+  double s = 0.0;
+  double a = 0.0;
+  double b = 0.0;
+  double *Vy = (double *)calloc(n, sizeof(double));
+  for(int i = 0; i < f; i++){
+    int total = 0;
+    for(int j = 0; j < n; j++){
+      total += V[i*n + j]*y[j];
+    }
+    Vy[i] = total;
+  }
+
+  for(int j = 0; j < n; j++) {
+   
+    // here we calculate the j entry in VtFVy
+    int total = 0;
+    for(int i = 0; i < f; i++){
+      total += VtF[j*f + i]*Vy[i];
+    }
+    // add sigma_square * j spot of the new y to total
+    total += sigma2[j] * y[j];
+    a += total * y[j];
+  }
+  a = a * 2.0 * lambda;
+  // calculate b here
+  double total = 0.0;
+  for (int j = 0; j < n; j++) {
+    total += y[j] * gradient[j];
+  }
+
+  b = total;
+
+  // s can't be larger than 1
+  if((-b/a) < 1.0) {
+    s = (-b/a);
+  } else {
+    s = 1.0;
+  }
+ 
+  printf("\nstep_size: %g", s);
+  printf("\n");
+  // replace x with the new values
+  for(int j = 0; j < n; j++){
+    x[j] += s*y[j];
+  }
+
+  free(Vy);
+
  BACK:
   return retcode;
 }

@@ -109,6 +109,11 @@ void myokillmyo(myo **ppmyo)
   free(pmyo->Vx);
   free(pmyo->VtF);
 
+  // custom fields
+  free(pmyo->gradients);
+  free(pmyo->descending_y);
+  free(pmyo->descending_optimized_y);
+  free(pmyo->y);
   free(pmyo);
   *ppmyo = NULL;
 }
