@@ -168,7 +168,8 @@ int myo_step(myo *pmyo)
 
 
   /** next, compute direction **/
-
+  double optimal_cost = 0.0
+  int feasible_y_count = 0
   for (int k = 0; k < n; k++) {
 
     double total = 0;
@@ -196,10 +197,29 @@ int myo_step(myo *pmyo)
     }
 
     if(is_y_feasible) {
+      double cost = 0.0
+      for(int j = 0; j < n; j++) {
+
+        cost += gradients[j].value * descending_y[j];
+      }
+
+      // every time the optimal cost is reset to the newest
+      // lower cost until it is impossible to find a lower one
+      // when feasible_y_count is <= 0
+      if(feasible_y_count <= 0 || cost < optimal_cost) {
+        feasible_y_count+=1;
+        // find the optimal cost and set it to the variable if the current cost is lower
+        optimal_cost = cost;
+        for(int j = 0; j < n; j++) {
+          descending_optimized_y[j] = descending_y[j];
+        }
+      }
       
     }
 
   }
+
+  printf("feasible_y_count: %d", feasible_y_count)
   /** next, compute step size **/
  BACK:
   return retcode;

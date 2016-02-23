@@ -27,6 +27,7 @@ typedef struct myo{
   // custom struct fields
   gradient_type *gradients;
   double *descending_y;
+  double *descending_optimized_y;
 }myo;
 
 #define NOMEM 100
